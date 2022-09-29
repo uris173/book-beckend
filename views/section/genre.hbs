@@ -1,0 +1,325 @@
+<div class="row" bis_skin_checked="1">
+  <div class="col-12" bis_skin_checked="1">
+    <div class="card" bis_skin_checked="1">
+      <div class="card-body" bis_skin_checked="1">
+
+        <form class="app-search d-none d-lg-block" style="margin-left: 0;"
+        action="/genres " method="get">
+          <div class="inner mb-3 row">
+            <div class="col-md-11 col-11 position-relative" bis_skin_checked="1">
+              <input type="text" class="inner form-control form-control" placeholder="Поиск..." name="search">
+              <span class="uil-search" style="left: 23px;"></span>
+            </div>
+            <div class="col-md-1 col-1 d-grid" bis_skin_checked="1">
+              <button type="submit" class="btn btn-info btn-soft-info waves-effect waves-light"><i class="uil-search me-2"></i>Поиск</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="messages">
+          {{#if error}}
+          <div id="error" class="alert alert-danger" role="alert" bis_skin_checked="1">
+            Ошибка жанров! <a class="alert-link">{{error}}</a> Есть совпадения при добавлении данных. Избегайте
+            добавления одинаковых значений.
+          </div>
+          {{/if}}
+
+          {{#if success}}
+          <div id="success" class="alert alert-success" role="alert" bis_skin_checked="1">
+            Успешно! <a class="alert-link">{{success}}</a>
+          </div>
+          {{/if}}
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between">
+          <h4 class="card-title">Жанры</h4>
+          <button type="button" class="btn btn-light btn-rounded waves-effect" data-bs-toggle="modal"
+            data-bs-target="#addModal">
+            Добавить</button>
+        </div>
+        <p class="card-title-desc">Таблица Жанров</p>
+
+        <div class="table-responsive" bis_skin_checked="1">
+          <table class="table table-editable table-nowrap align-middle table-edits">
+            <thead>
+              <tr style="cursor: pointer;">
+                <th>№</th>
+                <th>Категории</th>
+                <th>Субкатегории</th>
+                <th>Название</th>
+                <th>Название на узбекском</th>
+                <th>Ссылка</th>
+                <th>Статус</th>
+                <th>Изменить</th>
+                <th>Удалить</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each genre}}
+              <tr data-id="1" style="cursor: pointer;">
+                <td data-field="id" style="width: 80px">{{index}}</td>
+                <td>{{subcategory.category.title}}</td>
+                <td>{{subcategory.title}}</td>
+                <td>{{title}}</td>
+                <td>{{title_uz}}</td>
+                <td>{{slug}}</td>
+                <td><span class="{{class}}">{{status}}</span></td>
+                <td style="width: 100px;">
+                  <button class="btn btn-outline-secondary" title="Изменить" type="button" data-bs-toggle="modal"
+                    data-bs-target="#editModal" onclick="edit('{{_id}}')">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                </td>
+                <td style="width: 100px">
+                  <a href="/genres/delete/{{_id}}" class="btn btn-outline-secondary" title="Удалить">
+                    <i class="uil-trash-alt"></i>
+                  </a>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        <nav aria-label="..." class="mt-3 d-flex justify-content-end">
+          <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" tabindex="-1">Назад</a>
+              </li>
+              {{#each pages}}
+              <li class="page-item {{class}}"><a class="page-link" href="?page={{queryNum}}">{{num}}</a></li>
+              {{/each}}
+              <li class="page-item">
+                <a class="page-link" href="#">Далее</a>
+              </li>
+          </ul>
+        </nav>
+
+        <div>
+          <!-- add Subcategory -->
+          <div id="addModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" bis_skin_checked="1"
+            style="display: none;" aria-hidden="true">
+            <div class="modal-dialog" bis_skin_checked="1">
+              <div class="modal-content" bis_skin_checked="1">
+                <div class="modal-header" bis_skin_checked="1">
+                  <h5 class="modal-title mt-0" id="myModalLabel">Добавить Жанр</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <!--  onclick="reset()" -->
+                  </button>
+                </div>
+                <div class="modal-body" bis_skin_checked="1">
+                  <div class="row" bis_skin_checked="1">
+                    <form action="/genres/add" method="post">
+                      <!-- name="reset" -->
+
+                      <div class="col-lg-12 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Выберите категорию</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true" name="category" id="category">
+                          <option data-select2-id="8">Выберите категорию...</option>
+                          {{#each category}}
+                          <option value="{{_id}}">{{title}}</option>
+                          {{/each}}
+                        </select>
+                      </div>
+
+                      <div class="col-lg-12 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Выберите субкатегорию</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true" name="subcategory" id="subcategory">
+                          <option>Выберите субкатегорию...</option>
+
+                        </select>
+                      </div>
+
+                      <div class="col-lg-12" bis_skin_checked="1">
+                        <div class="mb-3" bis_skin_checked="1">
+                          <label class="form-label" for="manufacturername">Название жанра</label>
+                          <input id="manufacturername" name="title" type="text" class="form-control">
+                        </div>
+                      </div>
+
+                      <div class="col-lg-12" bis_skin_checked="1">
+                        <div class="mb-3" bis_skin_checked="1">
+                          <label class="form-label" for="manufacturername">Название жанра на узбекском</label>
+                          <input id="manufacturername" name="title_uz" type="text" class="form-control">
+                        </div>
+                      </div>
+
+                      <div class="col-lg-12" bis_skin_checked="1">
+                        <div class="mb-3" bis_skin_checked="1">
+                          <label class="form-label" for="manufacturerbrand">Ссылка</label>
+                          <input id="manufacturerbrand" name="slug" type="text" class="form-control">
+                        </div>
+                      </div>
+
+                      <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                        <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="status"
+                          value="1">
+                        <label class="form-check-label" for="customSwitch1">Активность</label>
+                      </div>
+
+                      <div class="modal-footer" bis_skin_checked="1">
+                        <button type="button" class="btn btn-light waves-effect"
+                          data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">Добавить</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div>
+        </div>
+
+        <!-- edit Subcategory -->
+        <div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" bis_skin_checked="1"
+          style="display: none;" aria-hidden="true">
+          <div class="modal-dialog" bis_skin_checked="1">
+            <div class="modal-content" bis_skin_checked="1">
+              <div class="modal-header" bis_skin_checked="1">
+                <h5 class="modal-title mt-0" id="myModalLabel">Изменение категория</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body" bis_skin_checked="1">
+                <div class="row" bis_skin_checked="1">
+                  <form action="/genres/save" method="post" name="editForm">
+                    <input type="hidden" name="_id">
+                    <!-- name="reset" -->
+                    <div class="col-lg-12 mb-3" bis_skin_checked="1" data-select2-id="170">
+                      <label class="form-label">Выберите категорию</label>
+                      <select class="form-control select2-search-disable select2-hidden-accessible" data-select2-id="6"
+                        tabindex="-1" aria-hidden="true" name="category" id="categoryEdit">
+                        <option data-select2-id="8">Выберите категорию...</option>
+                        {{#each category}}
+                        <option value="{{_id}}">{{title}}</option>
+                        {{/each}}
+                      </select>
+                    </div>
+
+                    <div class="col-lg-12 mb-3" bis_skin_checked="1" data-select2-id="170">
+                      <label class="form-label">Выберите субкатегорию</label>
+                      <select class="form-control select2-search-disable select2-hidden-accessible" data-select2-id="6"
+                        tabindex="-1" aria-hidden="true" name="subcategory" id="subcategoryEdit">
+                        <option>Выберите субкатегорию...</option>
+
+                      </select>
+                    </div>
+
+                    <div class="col-lg-12" bis_skin_checked="1">
+                      <div class="mb-3" bis_skin_checked="1">
+                        <label class="form-label" for="manufacturername">Название жанра</label>
+                        <input id="manufacturername" name="title" type="text" class="form-control">
+                      </div>
+                    </div>
+
+                    <div class="col-lg-12" bis_skin_checked="1">
+                      <div class="mb-3" bis_skin_checked="1">
+                        <label class="form-label" for="manufacturername">Название жанра на узбекском</label>
+                        <input id="manufacturername" name="title_uz" type="text" class="form-control">
+                      </div>
+                    </div>
+
+                    <div class="col-lg-12" bis_skin_checked="1">
+                      <div class="mb-3" bis_skin_checked="1">
+                        <label class="form-label" for="manufacturerbrand">Ссылка</label>
+                        <input id="manufacturerbrand" name="slug" type="text" class="form-control">
+                      </div>
+                    </div>
+
+                    <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                      <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="status"
+                        value="1">
+                      <label class="form-check-label" for="customSwitch1">Активность</label>
+                    </div>
+
+                    <div class="modal-footer" bis_skin_checked="1">
+                      <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Закрыть</button>
+                      <button type="submit" class="btn btn-primary waves-effect waves-light">Добавить</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  let category = document.getElementById('category')
+  let subcategoryForm = document.getElementById('subcategory')
+
+  category.addEventListener('change', (event) => {
+    subcategoryForm.innerHTML = '<option selected>Выберите субкатегорию...</option>'
+    let _id = event.target.value
+    fetch(`/genres/category/${_id}`)
+    .then(res => res.json())
+    .then(subcategory => {
+      subcategory.forEach(sub => {
+        subcategoryForm.innerHTML += `
+        <option value="${sub._id}">${sub.title}</option>
+      `
+      })
+    })
+  })
+
+
+  let editForm = document.forms.editForm
+  let editCategory = document.getElementById('categoryEdit')
+  let editSubcategory = document.getElementById('subcategoryEdit')
+
+  function edit(id) {
+    fetch(`/genres/edit/${id}`)
+    .then(res => res.json())
+    .then(genre => {
+      editForm._id.value = id
+      editForm.category.value = genre.subcategory.category._id
+      if (genre.subcategory.category._id) {
+        let categoryId = genre.subcategory.category._id
+        editSubcategory.innerHTML = '<option selected>Выберите субкатегорию...</option>'
+        {{!-- fetch(`/genres/category/edit/${categoryId}`) --}}
+        fetch(`/genres/category/${categoryId}`)
+        .then(res => res.json())
+        .then(subcategory =>{
+          subcategory.forEach(sub =>{
+            editSubcategory.innerHTML += `<option value="${sub._id}">${sub.title}</option>`
+            editForm.subcategory.value = genre.subcategory._id
+          })
+        })
+      }
+      editCategory.addEventListener('change', (event) =>{
+        editSubcategory.innerHTML = '<option selected>Выберите субкатегорию...</option>'
+        let _id = event.target.value
+        fetch(`/genres/category/${_id}`)
+        .then(res => res.json())
+        .then(subcategory => {
+          subcategory.forEach(sub => {
+            editSubcategory.innerHTML += `<option value="${sub._id}">${sub.title}</option>`
+          })
+        })
+      })
+      
+      editForm.title.value = genre.title
+      editForm.title_uz.value = genre.title_uz
+      editForm.slug.value = genre.slug
+      editForm.status.checked = genre.status == 1 ? true : false
+    })
+  }
+
+
+  if (document.getElementById('error')) {
+    setTimeout(() => {
+      document.getElementById('error').remove()
+    }, 5000)
+  }
+  if (document.getElementById('success')) {
+    setTimeout(() => {
+      document.getElementById('success').remove()
+    }, 5000)
+  }
+</script>

@@ -1,0 +1,115 @@
+<div class="row" bis_skin_checked="1">
+  <div class="col-md-6 col-xl-2" bis_skin_checked="1">
+      <div class="card" bis_skin_checked="1">
+          <div class="card-body" bis_skin_checked="1">
+              <div bis_skin_checked="1">
+                  <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{categoryCount}}</span></h4>
+                  <p class="text-muted mb-0">Количество "Категориев"</p>
+              </div>
+          </div>
+      </div>
+  </div> <!-- end col-->
+  
+  <div class="col-md-6 col-xl-2" bis_skin_checked="1">
+      <div class="card" bis_skin_checked="1">
+          <div class="card-body" bis_skin_checked="1">
+              <div bis_skin_checked="1">
+                  <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{subcategoryCount}}</span></h4>
+                  <p class="text-muted mb-0">Количество "Cубкатегориев"</p>
+              </div>
+          </div>
+      </div>
+  </div> <!-- end col-->
+
+  <div class="col-md-6 col-xl-2" bis_skin_checked="1">
+      <div class="card" bis_skin_checked="1">
+          <div class="card-body" bis_skin_checked="1">
+              <div bis_skin_checked="1">
+                  <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{genreCount}}</span></h4>
+                  <p class="text-muted mb-0">Количество "Жанров"</p>
+              </div>
+          </div>
+      </div>
+  </div> <!-- end col-->
+
+  <div class="col-md-6 col-xl-2" bis_skin_checked="1">
+      <div class="card" bis_skin_checked="1">
+          <div class="card-body" bis_skin_checked="1">
+              <div bis_skin_checked="1">
+                  <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{bookCount}}</span></h4>
+                  <p class="text-muted mb-0">Количество "Книг"</p>
+              </div>
+          </div>
+      </div>
+  </div> <!-- end col-->
+
+  <div class="col-md-6 col-xl-2" bis_skin_checked="1">
+      <div class="card" bis_skin_checked="1">
+          <div class="card-body" bis_skin_checked="1">
+              <div bis_skin_checked="1">
+                  <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{userCount}}</span></h4>
+                  <p class="text-muted mb-0">Количество "Пользователей"</p>
+              </div>
+          </div>
+      </div>
+  </div> <!-- end col-->
+
+  <div class="col-md-6 col-xl-2" bis_skin_checked="1">
+
+      <div class="card" bis_skin_checked="1">
+          <div class="card-body" bis_skin_checked="1">
+              <div bis_skin_checked="1">
+                  <h4 class="mb-1 mt-1"><span data-plugin="counterup">1258</span></h4>
+                  <p class="text-muted mb-0">Количество "Заказов"</p>
+              </div>
+          </div>
+      </div>
+  </div> <!-- end col-->
+</div>
+
+
+<div class="row" bis_skin_checked="1">
+  <div class="col-12" bis_skin_checked="1">
+    <div class="card" bis_skin_checked="1">
+      <div class="card-body" bis_skin_checked="1">
+
+        <div class="d-flex align-items-center justify-content-between">
+          <h4 class="card-title">Книги</h4>
+        </div>
+        <p class="card-title-desc">Таблица недавно добавленных книги</p>
+
+        <div class="table-responsive" bis_skin_checked="1">
+          <table class="table table-editable table-nowrap align-middle table-edits">
+            <thead>
+              <tr style="cursor: pointer;">
+                <th>№</th>
+                <th>Жанр</th>
+                <th>Название</th>
+                <th>Автор</th>
+                <th>Цена</th>
+                <th>Тип книги</th>
+                <th>Статус</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each book}}
+              <tr data-id="1" style="cursor: pointer;">
+                <td data-field="id" style="width: 80px">{{index}}</td>
+                <td>{{category.title}}</td>
+                <td>{{title}}</td>
+                <td>{{author}}</td>
+                <td>{{price}}</td>
+                <td>{{bookType}}</td>
+                <td><span class="{{class}}">{{status}}</span></td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        <div>
+
+        </div>
+      </div>
+    </div>
+  </div> <!-- end col -->
+</div>

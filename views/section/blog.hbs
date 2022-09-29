@@ -1,0 +1,218 @@
+<div class="row" bis_skin_checked="1">
+  <div class="col-12" bis_skin_checked="1">
+    <div class="card" bis_skin_checked="1">
+      <div class="card-body" bis_skin_checked="1">
+        
+        <form class="app-search d-none d-lg-block" style="margin-left: 0;"
+        action="/category" method="get">
+          <div class="inner mb-3 row">
+            <div class="col-md-11 col-11 position-relative" bis_skin_checked="1">
+              <input type="text" class="inner form-control form-control" placeholder="Поиск..." name="search">
+              <span class="uil-search" style="left: 23px;"></span>
+            </div>
+            <div class="col-md-1 col-1 d-grid" bis_skin_checked="1">
+              <button type="submit" class="btn btn-info btn-soft-info waves-effect waves-light"><i class="uil-search me-2"></i>Поиск</button>
+            </div>
+          </div>
+        </form>
+
+        <div class="messages">
+          {{#if error}}
+          <div id="error" class="alert alert-danger" role="alert" bis_skin_checked="1">
+            Ошибка категория! <a class="alert-link">{{error}}</a> Есть совпадения при добавлении данных. Избегайте добавления одинаковых значений.
+          </div>
+          {{/if}}
+  
+          {{#if success}}
+          <div id="success" class="alert alert-success" role="alert" bis_skin_checked="1">
+            Успешно! <a class="alert-link">{{success}}</a>
+          </div>
+          {{/if}}
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between">
+          <h4 class="card-title">Блог</h4>
+          <button type="button" class="btn btn-light btn-rounded waves-effect" data-bs-toggle="modal"
+            data-bs-target="#addModal">
+            Добавить</button>
+        </div>
+        <p class="card-title-desc">Таблица Блогов</p>
+
+        <div class="table-responsive" bis_skin_checked="1">
+          <table class="table table-editable table-nowrap align-middle table-edits">
+            <thead>
+              <tr style="cursor: pointer;">
+                <th>№</th>
+                <th>Название блога</th>
+                <th>Фотография</th>
+                <th>Статус</th>
+                <th>Изменить</th>
+                <th>Удалить</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#each blog}}
+              <tr data-id="1" style="cursor: pointer;">
+                <td data-field="id" style="width: 80px">{{index}}</td>
+                <td>{{title}}</td>
+                <td><img src="{{img}}" style="height: 40px;"></td>
+                <td><span class="{{class}}">{{status}}</span></td>
+                <td style="width: 100px;">
+                  <button class="btn btn-outline-secondary" title="Изменить" type="button" data-bs-toggle="modal"
+                  data-bs-target="#editModal"
+                  onclick="edit('{{_id}}')">
+                  <i class="fas fa-pencil-alt"></i>
+                </button>
+              </td>
+              <td style="width: 100px">
+                <a href="/blog/delete/{{_id}}" class="btn btn-outline-secondary" title="Удалить">
+                  <i class="uil-trash-alt"></i>
+                </a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        </div>
+        <nav aria-label="..." class="mt-3 d-flex justify-content-end">
+          <ul class="pagination">
+            <li class="page-item">
+              <a class="page-link" href="#" tabindex="-1">Назад</a>
+            </li>
+            {{#each pages}}
+            <li class="page-item {{class}}"><a class="page-link" href="?page={{queryNum}}">{{num}}</a></li>
+            {{/each}}
+            <li class="page-item">
+              <a class="page-link" href="#">Далее</a>
+            </li>
+          </ul>
+        </nav>
+        
+        <div >
+          <!-- edit Blog -->
+          <div class="modal fade bs-example-modal-xl" id="editModal" tabindex="-1"
+            aria-labelledby="myExtraLargeModalLabel" bis_skin_checked="1" style="padding-right: 19px;" aria-modal="true"
+            role="dialog">
+            <div class="modal-dialog modal-xl" bis_skin_checked="1">
+              <div class="modal-content" bis_skin_checked="1">
+                <div class="modal-header" bis_skin_checked="1">
+                  <h5 class="modal-title mt-0" id="myExtraLargeModalLabel">Изменить блог</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                  </button>
+                </div>
+                <div class="modal-body" bis_skin_checked="1">
+                  <div class="row" bis_skin_checked="1">
+                    <form action="/blog/save" method="post" enctype="multipart/form-data" name="editForm">
+                      <input type="hidden" name="_id">
+                      <div class="col-lg-12" bis_skin_checked="1">
+                        <div class="mb-3" bis_skin_checked="1">
+                          <label class="form-label" for="manufacturername">Название блога</label>
+                          <input id="manufacturername" name="title" type="text" class="form-control">
+                        </div>
+                      </div>
+
+                      <div class="mb-3 col-lg-12" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Описание</label>
+                        <textarea type="text" class="form-control" id="formrow-firstname-input" name="description" rows="8"></textarea>
+                      </div>
+
+                      <div class="mb-4 col-lg-12" bis_skin_checked="1">
+                        <input type="file" class="form-control-file" name="img">
+                      </div>
+
+                        <!-- <input type="checkbox" id="switch4" switch="success" checked="" name="status">
+                        <label for="switch4" data-on-label="On" data-off-label="Off"></label> -->
+                        
+                      <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                        <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="status" value="1">
+                        <label class="form-check-label" for="customSwitch1">Активность</label>
+                      </div>
+
+                      <div class="modal-footer" bis_skin_checked="1">
+                        <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">Изменить</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div>
+
+          <!-- add Blog -->
+          <div class="modal fade bs-example-modal-xl" id="addModal" tabindex="-1"
+            aria-labelledby="myExtraLargeModalLabel" bis_skin_checked="1" style="padding-right: 19px;" aria-modal="true"
+            role="dialog">
+            <div class="modal-dialog modal-xl" bis_skin_checked="1">
+              <div class="modal-content" bis_skin_checked="1">
+                <div class="modal-header" bis_skin_checked="1">
+                  <h5 class="modal-title mt-0" id="myExtraLargeModalLabel">Добавать блог</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                  </button>
+                </div>
+                <div class="modal-body" bis_skin_checked="1">
+                  <div class="row" bis_skin_checked="1">
+                    <form action="/blog/add" method="post" enctype="multipart/form-data">
+                      <div class="col-lg-12" bis_skin_checked="1">
+                        <div class="mb-3" bis_skin_checked="1">
+                          <label class="form-label" for="manufacturername">Название блога</label>
+                          <input id="manufacturername" name="title" type="text" class="form-control">
+                        </div>
+                      </div>
+
+                      <div class="mb-3 col-lg-12">
+                        <label class="form-label" for="formrow-firstname-input">Описание</label>
+                        <textarea type="text" class="form-control" rows="8" id="formrow-firstname-input" name="description"></textarea>
+                      </div>
+
+                      <div class="mb-4 col-lg-12" bis_skin_checked="1">
+                        <input type="file" class="form-control-file" name="img">
+                      </div>
+
+                        <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                          <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="status" value="1">
+                          <label class="form-check-label" for="customSwitch1">Активность</label>
+                        </div>
+
+                      <div class="modal-footer" bis_skin_checked="1">
+                        <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Закрыть</button>
+                        <button type="submit" class="btn btn-primary waves-effect waves-light">Добавить</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> <!-- end col -->
+</div>
+
+
+<script>
+  let editForm = document.forms.editForm
+
+  function edit(id){
+    fetch(`/blog/edit/${id}`)
+    .then(res => res.json())
+    .then(blog =>{
+      editForm._id.value = id
+      editForm.title.value = blog.title
+      editForm.description.value = blog.description
+      editForm.status.checked = blog.status == 1 ? true : false
+    })
+  }
+
+  if(document.getElementById('error')){
+    setTimeout(() =>{
+      document.getElementById('error').remove()
+    }, 5000)
+  }
+  if(document.getElementById('success')){
+    setTimeout(() =>{
+      document.getElementById('success').remove()
+    }, 5000)
+  }
+</script>

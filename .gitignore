@@ -1,0 +1,7 @@
+/node_modules
+/image
+/keys
+/package-lock.json
+
+.env.local
+.env.*.local

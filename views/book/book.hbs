@@ -1,0 +1,525 @@
+<div class="row" bis_skin_checked="1">
+  <div class="col-12" bis_skin_checked="1">
+    <div class="card" bis_skin_checked="1">
+      <div class="card-body" bis_skin_checked="1">
+
+        <form class="app-search d-none d-lg-block" style="margin-left: 0;"
+        action="/books" method="get">
+          <div class="inner mb-3 row">
+            <div class="col-md-11 col-11 position-relative" bis_skin_checked="1">
+              <input type="text" class="inner form-control form-control" placeholder="Поиск..." name="search">
+              <span class="uil-search" style="left: 23px;"></span>
+            </div>
+            <div class="col-md-1 col-1 d-grid" bis_skin_checked="1">
+              <button type="submit" class="btn btn-info btn-soft-info waves-effect waves-light"><i class="uil-search me-2"></i>Поиск</button>
+            </div>
+          </div>
+        </form>
+
+
+        <div class="messages">
+          {{#if error}}
+          <div id="error" class="alert alert-danger" role="alert" bis_skin_checked="1">
+            Ошибка книги! <a class="alert-link">{{error}}</a> Есть совпадения при добавлении данных. Избегайте
+            добавления одинаковых значений.
+          </div>
+          {{/if}}
+
+          {{#if success}}
+          <div id="success" class="alert alert-success" role="alert" bis_skin_checked="1">
+            Успешно! <a class="alert-link">{{success}}</a>
+          </div>
+          {{/if}}
+        </div>
+
+        <div class="d-flex align--center justify-content-between">
+          <h4 class="card-title">Книги</h4>
+          <button type="button" class="btn btn-light btn-rounded waves-effect" data-bs-toggle="modal"
+            data-bs-target="#addModal">
+            Добавить</button>
+        </div>
+        <p class="card-title-desc">Таблица Книг</p>
+
+        <div class="table-responsive" bis_skin_checked="1">
+          <table class="table table-editable table-nowrap align-middle table-edits">
+            <thead>
+              <tr style="cursor: pointer;">
+                <th>№</th>
+                <th style="width: 400px;">Название</th>
+                <th>Категории</th>
+                <th>Субкатегории</th>
+                <th>Жанры</th>
+                <th>Автор</th>
+                <th>ISBN</th>
+                <th>Статус</th>
+                <th>Бестселлер</th>
+                <th>В тренде</th>
+                <th class="text-center">Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each book}}
+              <tr data-id="1" style="cursor: pointer;">
+                <td data-field="id" style="width: 80px">{{index}}</td>
+                <td>{{title}}</td>
+                <td data-field="id" style="width: 80px">{{category.title}}</td>
+                <td data-field="id" style="width: 80px">{{subcategory.title}}</td>
+                <td data-field="id" style="width: 80px">{{genre.title}}</td>
+                {{!-- <td>{{category.title}}</td> --}}
+                <td>{{author}}</td>
+                <td>{{isbn}}</td>
+                <td><span class="{{class}}">{{status}}</span></td>
+                <td class="text-center"><span class="{{classType}}">{{type}}</span></td>
+                <td class="text-center"><span class="{{classTrend}}">{{trend}}</span></td>
+                <td class="text-center">
+                  <a href="/books/view/{{_id}}" class="btn btn-outline-secondary">
+                    <i class="uil-file-info-alt"></i>
+                  </a>
+                  <button class="btn btn-outline-secondary" title="Изменить" type="button" data-bs-toggle="modal"
+                    data-bs-target="#editModal" onclick="edit('{{_id}}')">
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <a href="/books/delete/{{_id}}" class="btn btn-outline-secondary" title="Удалить">
+                    <i class="uil-trash-alt"></i>
+                  </a>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        <nav aria-label="..." class="mt-3 d-flex justify-content-end">
+          <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" tabindex="-1">Назад</a>
+              </li>
+              {{#each pages}}
+              <li class="page-item {{class}}"><a class="page-link" href="?page={{queryNum}}">{{num}}</a></li>
+              {{/each}}
+              <li class="page-item">
+                <a class="page-link" href="#">Далее</a>
+              </li>
+          </ul>
+        </nav>
+
+
+        <div>
+          <!-- add Book -->
+          <div class="modal fade bs-example-modal-xl" id="addModal" tabindex="-1"
+            aria-labelledby="myExtraLargeModalLabel" bis_skin_checked="1" style="padding-right: 19px;" aria-modal="true"
+            role="dialog">
+            <div class="modal-dialog modal-xl" bis_skin_checked="1">
+              <div class="modal-content" bis_skin_checked="1">
+                <div class="modal-header" bis_skin_checked="1">
+                  <h5 class="modal-title mt-0" id="myExtraLargeModalLabel">Добавать книгу</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                  </button>
+                </div>
+                <div class="modal-body" bis_skin_checked="1">
+                  <form action="/books/add" method="post" enctype="multipart/form-data">
+                    <div class="row">
+                      <div class="col-lg-6 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Категория книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true"
+                          name="category" id="category">
+                          <option data-select2-id="8">Выберите категорию...</option>
+                          {{#each category}}
+                          <option value="{{_id}}">{{title}} || {{title_uz}}</option>
+                          {{/each}}
+                        </select>
+                      </div>
+
+                      <div class="col-lg-6 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Субкатегория книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true"
+                          name="subcategory" id="subcategory">
+                          <option data-select2-id="8">Выберите субкатегорию...</option>
+                          
+                        </select>
+                      </div>
+
+                      <div class="col-lg-6 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Жанр книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true"
+                          name="genre" id="genre">
+                          <option data-select2-id="8">Выберите жанр...</option>
+                          
+                        </select>
+                      </div>
+
+                      <div class="col-lg-6 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Язык книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true"
+                          name="language">
+                          <option data-select2-id="8">Выберите язык...</option>
+                          <option data-select2-id="8">Русский язык</option>
+                          <option data-select2-id="8">O'zbek tili</option>
+                          <option data-select2-id="8">English language</option>
+                          <option data-select2-id="8">Türk Dili</option>
+                          <option data-select2-id="8">deutsche Sprache</option>
+
+                        </select>
+                      </div>
+
+                      <div class="mb-3 col-lg-6" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Название книги</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="title">
+                      </div>
+
+                      <div class="mb-3 col-lg-6" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Автор</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="author">
+                      </div>
+
+                      <div class="mb-3 col-lg-4" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">ISBN</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="isbn">
+                      </div>
+
+                      <div class="mb-3 col-lg-4" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Кол-во страниц</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="pages">
+                      </div>
+
+                      <div class="col-lg-4" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Тип Книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true" name="bookType">
+                          <option data-select2-id="8">Тип книги</option>
+                          <option value="Толстый переплёт">Толстый переплёт</option>
+                          <option value="Тонкий переплёт">Тонкий переплёт</option>
+                        </select>
+                      </div>
+
+                      <div class="mb-3 col-lg-4" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Год выхода</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="date">
+                      </div>
+
+                      <div class="mb-3 col-lg-4" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Цена</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="price">
+                      </div>
+
+                      <div class="col-lg-4" bis_skin_checked="1">
+                        <input type="file" class="form-control-file" name="img" style="margin-top: 30px;" multiple>
+                      </div>
+
+                      <div class="mb-3 col-lg-12" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Описание</label>
+                        <textarea type="text" class="form-control" id="formrow-firstname-input" name="description"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                      <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="status"
+                        value="1">
+                      <label class="form-check-label" for="customSwitch1">Активность</label>
+                    </div>
+
+                    <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                      <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="type"
+                        value="1">
+                      <label class="form-check-label" for="customSwitch1">Бестселлер</label>
+                    </div>
+
+                    <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                      <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="trend"
+                        value="1">
+                      <label class="form-check-label" for="customSwitch1">В тренде</label>
+                    </div>
+
+                    <div class="modal-footer" bis_skin_checked="1">
+                      <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Закрыть</button>
+                      <button type="submit" class="btn btn-primary waves-effect waves-light">Добавить</button>
+                    </div>
+                  </form>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div>
+
+          <!-- edit Book -->
+          <div class="modal fade bs-example-modal-xl" id="editModal" tabindex="-1"
+            aria-labelledby="myExtraLargeModalLabel" bis_skin_checked="1" style="padding-right: 19px;" aria-modal="true"
+            role="dialog">
+            <div class="modal-dialog modal-xl" bis_skin_checked="1">
+              <div class="modal-content" bis_skin_checked="1">
+                <div class="modal-header" bis_skin_checked="1">
+                  <h5 class="modal-title mt-0" id="myExtraLargeModalLabel">Изменить данные книги</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                  </button>
+                </div>
+                <div class="modal-body" bis_skin_checked="1">
+
+                  <form action="/books/save" method="post" name="editForm" enctype="multipart/form-data">
+                    <input type="hidden" name="_id">
+                    <div class="row">
+                      <div class="col-lg-6 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Категория книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true"
+                          name="category" id="categoryEdit">
+                          <option data-select2-id="8">Выберите категорию...</option>
+                          {{#each category}}
+                          <option value="{{_id}}">{{title}} || {{title_uz}}</option>
+                          {{/each}}
+                        </select>
+                      </div>
+
+                      <div class="col-lg-6 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Субкатегория книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true"
+                          name="subcategory" id="subcategoryEdit">
+                          <option data-select2-id="8">Выберите субкатегорию...</option>
+                          
+                        </select>
+                      </div>
+
+                      <div class="col-lg-6 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Жанр книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true"
+                          name="genre" id="genreEdit">
+                          <option data-select2-id="8">Выберите жанр...</option>
+                          
+                        </select>
+                      </div>
+
+                      <div class="col-lg-6 mb-3" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Язык книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true"
+                          name="language">
+                          <option>Выберите язык...</option>
+                          <option>Русский язык</option>
+                          <option>O'zbek tili</option>
+                          <option>English language</option>
+                          <option>Türk Dili</option>
+                          <option>deutsche Sprache</option>
+
+                        </select>
+                      </div>
+
+                      <div class="mb-3 col-lg-6" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Название книги</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="title">
+                      </div>
+
+                      <div class="mb-3 col-lg-6" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Автор</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="author">
+                      </div>
+
+                      <div class="mb-3 col-lg-4" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">ISBN</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="isbn">
+                      </div>
+
+                      <div class="mb-3 col-lg-4" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Кол-во страниц</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="pages">
+                      </div>
+
+                      <div class="col-lg-4" bis_skin_checked="1" data-select2-id="170">
+                        <label class="form-label">Тип Книги</label>
+                        <select class="form-control select2-search-disable select2-hidden-accessible"
+                          data-select2-id="6" tabindex="-1" aria-hidden="true" name="bookType">
+                          <option data-select2-id="8">Тип книги</option>
+                          <option value="Толстый переплёт">Толстый переплёт</option>
+                          <option value="Тонкий переплёт">Тонкий переплёт</option>
+                        </select>
+                      </div>
+
+                      <div class="mb-3 col-lg-4" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Год выхода</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="date">
+                      </div>
+
+                      <div class="mb-3 col-lg-4" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Цена</label>
+                        <input type="text" class="form-control" id="formrow-firstname-input" name="price">
+                      </div>
+
+                      <div class="col-lg-4" bis_skin_checked="1">
+                        <input type="file" class="form-control-file" name="img" style="margin-top: 30px;" multiple>
+                      </div>
+
+                      <div class="mb-3 col-lg-12" bis_skin_checked="1">
+                        <label class="form-label" for="formrow-firstname-input">Описание</label>
+                        <textarea type="text" class="form-control" id="formrow-firstname-input" name="description"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                      <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="status"
+                        value="1">
+                      <label class="form-check-label" for="customSwitch1">Активность</label>
+                    </div>
+
+                    <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                      <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="type"
+                        value="1">
+                      <label class="form-check-label" for="customSwitch1">Бестселлер</label>
+                    </div>
+
+                    <div class="form-check form-switch mb-3" dir="ltr" bis_skin_checked="1">
+                      <input type="checkbox" class="form-check-input" id="customSwitch1" checked="" name="trend"
+                        value="1">
+                      <label class="form-check-label" for="customSwitch1">В тренде</label>
+                    </div>
+
+                    <div class="modal-footer" bis_skin_checked="1">
+                      <button type="button" class="btn btn-light waves-effect" data-bs-dismiss="modal">Закрыть</button>
+                      <button type="submit" class="btn btn-primary waves-effect waves-light">Добавить</button>
+                    </div>
+                  </form>
+                </div>
+              </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+          </div>
+
+          <!-- add Category -->
+
+        </div>
+      </div>
+    </div>
+  </div> <!-- end col -->
+</div>
+
+
+<script>
+
+  let categoryForm = document.getElementById('category')
+  let subcategoryForm = document.getElementById('subcategory')
+  let genreFrom = document.getElementById('genre')
+
+  categoryForm.addEventListener('change', (event) =>{
+    subcategoryForm.innerHTML = '<option selected>Выберите субкатегорию...</option>'
+    let _id = event.target.value
+    fetch(`/books/category/${_id}`)
+    .then(res => res.json())
+    .then(subcategory =>{
+      subcategory.forEach(sub =>{
+        subcategoryForm.innerHTML += `
+        <option value="${sub._id}">${sub.title} || ${sub.title_uz}</option>
+      `
+      })
+    })
+  })
+
+  subcategoryForm.addEventListener('change', (event) =>{
+    genreFrom.innerHTML = '<option selected>Выберите жанр...</option>'
+    let _id = event.target.value
+    fetch(`/books/subcategory/${_id}`)
+    .then(res => res.json())
+    .then(genre =>{
+      genre.forEach(genre =>{
+        genreFrom.innerHTML += `
+        <option value="${genre._id}">${genre.title} || ${genre.title_uz}</option>
+        `
+      })
+    })
+  })
+
+
+  let editForm = document.forms.editForm
+  let categoryEdit = document.getElementById('categoryEdit')
+  let subcategoryEdit = document.getElementById('subcategoryEdit')
+  let genreEdit = document.getElementById('genreEdit')
+
+  async function edit(id){
+    await fetch(`/books/edit/${id}`)
+    .then(res => res.json())
+    .then(book =>{
+      editForm._id.value = id
+      editForm.category.value = book.category._id
+      if(book.category._id){
+        let categoryId = book.category._id
+        subcategoryEdit.innerHTML = '<option selected>Выберите субкатегорию...</option>'
+        fetch(`/books/category/${categoryId}`)
+        .then(res => res.json())
+        .then(subcategory =>{
+          subcategory.forEach(sub =>{
+            subcategoryEdit.innerHTML += `<option value="${sub._id}">${sub.title} || ${sub.title_uz}</option>`
+            editForm.subcategory.value = book.subcategory._id
+          })
+        })
+      }
+
+      if(book.subcategory._id){
+        let subcategoryId = book.subcategory._id
+        genreEdit.innerHTML = '<option selected>Выберите жанр...</option>'
+        fetch(`/books/subcategory/${subcategoryId}`)
+        .then(res => res.json())
+        .then(genre =>{
+          genre.forEach(genre =>{
+            genreEdit.innerHTML += `<option value="${genre._id}">${genre.title} || ${genre.title_uz}</option>`
+            editForm.genre.value = book.genre._id
+          })
+        })
+      }
+
+
+      categoryEdit.addEventListener('change', (event) =>{
+        subcategoryEdit.innerHTML = '<option selected>Выберите субкатегорию...</option>'
+        genreEdit.innerHTML = '<option selected>Выберите жанр...</option>'
+        let _id = event.target.value
+        fetch(`/books/category/${_id}`)
+        .then(res => res.json())
+        .then(subcategory =>{
+          subcategory.forEach(sub =>{
+            subcategoryEdit.innerHTML += `
+            <option value="${sub._id}">${sub.title} || ${sub.title_uz}</option>
+            `
+          })
+        })
+      })
+
+      subcategoryEdit.addEventListener('change', (event) =>{
+        genreEdit.innerHTML = '<option selected>Выберите жанр...</option>'
+        let _id = event.target.value
+        fetch(`/books/subcategory/${_id}`)
+        .then(res => res.json())
+        .then(genre =>{
+          genre.forEach(genre =>{
+            genreEdit.innerHTML += `
+            <option value="${genre._id}">${genre.title} || ${genre.title_uz}</option>
+            `
+          })
+        })
+      })
+
+      editForm.title.value = book.title
+      editForm.author.value = book.author
+      editForm.description.value = book.description
+      editForm.price.value = book.price
+      editForm.date.value = book.date
+      editForm.bookType.value = book.bookType
+      editForm.isbn.value = book.isbn
+      editForm.language.value = book.language
+      editForm.pages.value = book.pages
+      editForm.status.checked = book.status == 1 ? true : false
+      editForm.type.checked = book.type == 1 ? true : false
+      editForm.trend.checked = book.trend == 1 ? true : false
+    })
+  }
+
+
+  if(document.getElementById('error')){
+    setTimeout(() =>{
+      document.getElementById('error').remove()
+    }, 5000)
+  }
+  if(document.getElementById('success')){
+    setTimeout(() =>{
+      document.getElementById('success').remove()
+    }, 5000)
+  }
+  
+</script>

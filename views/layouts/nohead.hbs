@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  
+  <meta charset="utf-8" />
+  <title> Minible - Admin & Dashboard Template</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="Premium Multipurpose Admin & Dashboard Template" name="description">
+  <meta content="Themesbrand" name="author">
+  <!-- App favicon -->
+  <link rel="shortcut icon" href="/public/assets/images/favicon.ico">
+
+
+  {{> HeaderStyle}}
+
+</head>
+
+<body >
+
+  <!-- Begin page -->
+  <div id="layout-wrapper">
+
+    <div class="main-content" style="margin-left: 0;">
+      <div class="page-content">
+        <div class="container-fluid">
+          {{{body}}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{> Rightbar}}
+  {{> VendorScript}}
+
+  <!-- <script src="public/assets/js/app.js"></script> -->
+  <script src="/public/assets/js/app-dark.js"></script> 
+
+  <style>
+    .vertical-menu, .navbar-brand-box, .vertical-menu-btn, .position-relative{
+      display: none;
+    }
+  </style>
+</body>
+
+</html>
